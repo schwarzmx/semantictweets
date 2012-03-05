@@ -1,0 +1,7 @@
+To run twitter_client.py:
+  1. Run mongodb with 'mongod' shell command (mongodb must be installed)
+  2. Run twitter_client.py with:
+    ./twitter_client.py <username> <password> <word1> <word2> <wordN>
+
+    The number of search words must be >1.
+
