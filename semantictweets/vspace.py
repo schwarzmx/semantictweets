@@ -26,8 +26,6 @@ class VSpace:
         """ Create the vector space for the current documents """
         self.term_index = self.get_word_index(docs)
 
-        print self.term_index
-
         self.doc_vectors = [self.create_vector(document) for document in docs]
 
     def get_word_index(self, docs):
@@ -84,7 +82,8 @@ class Tokenizer:
 
         self.remove_stop_words()
 
-        print self.terms
+        self.remove_duplicates()
+
         return self.terms
 
     def clean(self):
