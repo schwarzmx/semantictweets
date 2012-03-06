@@ -58,6 +58,7 @@ class VSpace:
 
 
 class Tokenizer:
+    """ Helper class for tokenizing document space and removing stop words """
 
     corpus = None
     terms = []
