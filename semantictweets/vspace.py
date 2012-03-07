@@ -48,14 +48,15 @@ class VSpace:
     def create_vector(self, doc):
         """ create a term vector for the current document """
 
-        vector = [0] * len(self.term_index)
+        # initialize in zero, use floats
+        vector = [0.0] * len(self.term_index) 
         terms = self.tokenizer.tokenize(doc)
 
         for term in terms:
-            vector[self.term_index[term]] += 1 # simple word count
+            # simple word count, use floats for LSI
+            vector[self.term_index[term]] += 1.0 
 
         return vector
-
 
 class Tokenizer:
     """ Helper class for tokenizing document space and removing stop words """
