@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from PorterStemmer import PorterStemmer
+
 class VSpace:
     """ This represents a document matrix in which documents are the columns 
     and each row is a term in the document. If the term exists in the document
@@ -24,8 +26,8 @@ class VSpace:
 
     def build_space(self, docs):
         """ Create the vector space for the current documents """
-        self.term_index = self.get_word_index(docs)
 
+        self.term_index = self.get_word_index(docs)
         self.doc_vectors = [self.create_vector(document) for document in docs]
 
     def get_word_index(self, docs):
@@ -64,17 +66,18 @@ class Tokenizer:
     corpus = None
     terms = []
     stop_words = []
+    stemmer = None
 
     def __init__(self):
 
         # read stop words from file
         self.stop_words = open('stop_words.txt', 'r').read().split()
+        self.stemmer = PorterStemmer()
 
     def tokenize(self, docs_string):
         """ Tokenizer's most important method.
         It separates the whole corpus string in tokens and
         removes stop words.
-        TODO: implement stemmer(?)
         """
         self.corpus = docs_string
 
@@ -96,7 +99,7 @@ class Tokenizer:
         self.corpus = self.corpus.replace("\s+", " ")
 
     def remove_stop_words(self):
-        self.terms = [term for term in self.terms if term not in self.stop_words]
+        self.terms = [self.stemmer.stem(term,0,len(term)-1) for term in self.terms if term not in self.stop_words]
 
     def remove_duplicates(self):
         """ remove duplicated terms in the list """

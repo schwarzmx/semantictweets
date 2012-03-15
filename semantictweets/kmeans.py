@@ -2,6 +2,7 @@
 
 from scipy import dot, mat, linalg, array, random, add
 from math import *
+from copy import copy
 
 class KMeans:
     """ This class represents the K-Means clustering algorithm.
@@ -15,6 +16,7 @@ class KMeans:
     def __init__(self, sem_space):
 
         rows, cols = sem_space.shape
+        print "dimensions: %d" % rows
         self.dimensions = rows
 
         self.documents = [Document(sem_space[:, c], c) for c in xrange(0,cols)]
@@ -35,7 +37,7 @@ class KMeans:
             print "iteration %d..." % iter
             # assign new clusters to old clusters
             for i in xrange(0, k):
-                old_clusters[i] = clusters[i]
+                old_clusters[i] = copy(clusters[i])
                 clusters[i].documents = []
 
             # for each document
@@ -45,8 +47,6 @@ class KMeans:
                 similarities = [cosine_similarity(document, cluster) for cluster in old_clusters]
                 max_index = array(similarities).argmax()
 
-                print "max_index: %d " % max_index
-
                 # assign document to that cluster
                 clusters[max_index].add(document)
 
@@ -55,8 +55,7 @@ class KMeans:
                 cluster.update_centroid()
             
             iter += 1
-
-
+            
         return clusters
 
     def random_clusters(self, k):
@@ -84,9 +83,7 @@ class Cluster:
 
     def __init__(self, tag, dimensions):
         self.index = tag
-        self.centroid = array(random.standard_normal(dimensions))
-
-        print "new centroid: " + str(self.centroid)
+        self.centroid = array(10*random.standard_normal(dimensions))
 
     def add(self, document):
         self.documents.append(document)
@@ -104,7 +101,6 @@ class Cluster:
             new_centroid = new_centroid + document.vector
 
         self.centroid = new_centroid / float(total_docs)
-        print self.centroid
 
     def __eq__(self, other):
         """ Override rich comparison method.
@@ -112,19 +108,18 @@ class Cluster:
         Returns True if the indices are the same in both documents lists, 
         False otherwise.
         """
+
         if not self or not other: #either one of them is null
             return False
 
         if len(self.documents) != len(other.documents):
             return False
 
-        for i in xrange(0, self.documents):
-            print "this: %d, other: %d" % (self.documents[i].index, other.documents[i].index)
+        for i in xrange(0, len(self.documents)):
             if self.documents[i].index != other.documents[i].index:
                 return False
 
         return True
-
 
 class Document:
 
