@@ -1,3 +1,4 @@
 testy/*.*
 **/*.pyc
 corpus
+clusters.txt

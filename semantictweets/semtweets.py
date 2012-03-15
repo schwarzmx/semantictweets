@@ -36,28 +36,28 @@ class SemanticTweets:
 
         vector_space = VSpace(self.tweets)
 
-        print vector_space.term_index
+        # print vector_space.term_index
 
         lsi = LSI(vector_space.doc_vectors)
         lsi.compute_tfidf()
-        lsi.rank_reduced_svd(k=500)  # empirically decide to how many dimensions to reduce
+        lsi.rank_reduced_svd(k=100)  # empirically decide to how many dimensions to reduce
 
         kmeans = KMeans(lsi.sem_space)
 
-        clusters = kmeans.cluster(k=50)
+        clusters = kmeans.cluster(k=100)
 
         # sort clusters by number of documents
         clusters = sorted(clusters, cmp=lambda x,y: cmp(len(y.documents),len(x.documents)))
 
-        print "clusters: %d" % len(clusters)
-        for cluster in clusters:
-            print "\n\n\tdocuments: %d" % len(cluster.documents)
-
-            for document in cluster.documents:
-                #print "\t\tindex: %d" % document.index
-                print "\t\ttweet: %s" % self.tweets[document.index]
-
-        total = reduce(lambda x, y: x+y, [len(cluster.documents) for cluster in clusters])
-        print "total documents: %d" % total
+#        print "clusters: %d" % len(clusters)
+#        for cluster in clusters:
+#            print "\n\n\tdocuments: %d" % len(cluster.documents)
+#
+#            for document in cluster.documents:
+#                #print "\t\tindex: %d" % document.index
+#                print "\t\ttweet: %s" % self.tweets[document.index]
+#
+#        total = reduce(lambda x, y: x+y, [len(cluster.documents) for cluster in clusters])
+#        print "total documents: %d" % total
         
-
+        return clusters
