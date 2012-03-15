@@ -1,0 +1,6 @@
+To execute this module type on your preferred console:
+$ python main.py
+
+The only dependencies of this module are Python 2.7 and SciPy
+
+This module was tested on MacOS X and Ubuntu 11.04.
